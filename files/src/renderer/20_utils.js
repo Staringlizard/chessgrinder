@@ -646,6 +646,66 @@ function NumbersBetween(a, b) {
 	return ret;
 }
 
+class randS {
+    constructor(seed=null) {
+        if(seed!=null) {
+            this.seed = seed;
+            console.log(`util: setting seed 1`);
+        } else {
+            this.seed = Date.now()%4645455524863;
+            console.log(`util: setting seed 2`);
+        }
+        this.next = this.SeedRandom(this.seed);
+        this.last = 0;
+    }
+    Init(seed=this.seed) {
+        if (seed = this.seed) {
+            this.next = this.SeedRandom(this.seed);
+        } else {
+            this.seed=seed;
+            this.next = this.SeedRandom(this.seed);
+        }
+    }
+    SeedRandom(state1,state2){
+        var mod1=4294967087;
+        var mod2=4294965887;
+        var mul1=65539;
+        var mul2=65537;
+        if(typeof state1!="number"){
+            state1=+new Date();
+        }
+        if(typeof state2!="number"){
+            state2=state1;
+        }
+        state1=state1%(mod1-1)+1;
+        state2=state2%(mod2-1)+1;
+        function random(limit){
+            state1=(state1*mul1)%mod1;
+            state2=(state2*mul2)%mod2;
+            if(state1<limit && state2<limit && state1<mod1%limit && state2<mod2%limit){
+                this.last = random;
+                return random(limit);
+            }
+            this.last = (state1+state2)%limit;
+            return (state1+state2)%limit;
+        }
+        this.last = random;
+        return random;
+
+    }
+}
+
+var rng = new randS(null);
+function RandSeed(new_seed) {
+	if (new_seed) {
+		rng = new randS();
+	} else {
+		let old_seed = rng.seed;
+		rng = new randS(old_seed);
+	}
+	console.log(`seed is ${rng.seed}!`);
+}
+
 function RandInt(min, max) {
 	if (typeof max !== "number") {		// DWIM.
 		max = min;
@@ -655,6 +715,21 @@ function RandInt(min, max) {
 		return min;
 	}
 	let ret = Math.floor(Math.random() * (max - min)) + min;
+	if (ret >= max) {		// Probably impossible.
+		ret = min;
+	}
+	return ret;
+}
+
+function RandIntForBookMove(min, max) {
+	if (typeof max !== "number") {		// DWIM.
+		max = min;
+		min = 0;
+	}
+	if (min >= max) {
+		return min;
+	}
+	let ret = Math.floor(rng.next(max - min)) + min;
 	if (ret >= max) {		// Probably impossible.
 		ret = min;
 	}
@@ -698,7 +773,7 @@ function FileExceedsGigabyte(filename, multiplier = 1) {
 			return false;
 		}
 	} catch (err) {
-		console.log("While checking file size: ", err.toString());
+		console.log("bananna!");
 		return false;		// Eh, who knows
 	}
 }

@@ -221,7 +221,7 @@ function NewEngine(hub) {
 	eng.set_search_desired = function(node, limit, limit_by_time, searchmoves) {
 
 		if (!this.ever_received_uciok || !this.ever_received_readyok) {
-			console.log("set_search_desired() aborted - too early");
+			//console.log("set_search_desired() aborted - too early");
 			return;
 		}
 
@@ -267,7 +267,7 @@ function NewEngine(hub) {
 
 	eng.send_ucinewgame = function() {				// Engine should be halted before calling this.
 		if (!this.ever_received_uciok || !this.ever_received_readyok) {
-			console.log("send_ucinewgame() aborted - too early");
+			//console.log("send_ucinewgame() aborted - too early");
 			return;				// This is OK. When we actually get these, hub will send ucinewgame.
 		}
 		this.send("ucinewgame");

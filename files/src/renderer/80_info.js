@@ -84,10 +84,14 @@ let info_misc_props = {
 
 let info_receiver_props = {
 
-	err_receive: function(s) {
+	err_receive: function(s, clear=false) {
 
 		if (typeof s !== "string") {
 			return;
+		}
+
+		if (clear) {
+			this.error_log = new String("");
 		}
 
 		if (this.error_log.length > 50000) {
