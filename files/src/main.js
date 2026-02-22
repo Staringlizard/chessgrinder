@@ -1680,6 +1680,7 @@ function menu_build() {
 				{
 					label: translate.t("Book frequency arrows"),
 					type: "checkbox",
+					accelerator: "CommandOrControl+Z",
 					checked: config.book_explorer,			// But this is never saved in the config file.
 					click: () => {
 						win.webContents.send("call", {
